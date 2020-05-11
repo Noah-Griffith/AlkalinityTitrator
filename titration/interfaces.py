@@ -23,10 +23,10 @@ temp_sensor = None
 def setup_interfaces():
     global ph_input_channel, temp_sensor
     # setup pH probe
-    i2c = busio.I2C(board.SCL, board.SDA)
-    ads = ADS.ADS(i2c)
-    ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
-    ads.gain = 2
+    # i2c = busio.I2C(board.SCL, board.SDA)
+    # ads = ADS.ADS(i2c)
+    # ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
+    # ads.gain = 2
 
     # setup temperature probe
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
@@ -65,18 +65,18 @@ def read_user_input(valid_inputs=None):
     return user_input
 
 
-def read_pH():
-   """Reads calibration-adjusted value for pH"""
-   volts = read_raw_pH()
-   temp = read_temperature()[0]
-   pH_val = analysis.calculate_pH(volts, temp)
-   return pH_val, volts
-
-
 # def read_pH():
-#      """TEMP FUNCTION until I can test pH"""
-#      constants.pH_call_iter += 1
-#      return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
+#    """Reads calibration-adjusted value for pH"""
+#    volts = read_raw_pH()
+#    temp = read_temperature()[0]
+#    pH_val = analysis.calculate_pH(volts, temp)
+#    return pH_val, volts
+
+
+def read_pH():
+     """TEMP FUNCTION until I can test pH"""
+     constants.pH_call_iter += 1
+     return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
 
 
 def read_raw_pH():
@@ -99,11 +99,11 @@ def dispense_HCl(volume):
     # NOTE should this wait for pH to settle instead of read_pH?
     lcd_out("{} ml HCl added".format(volume))
     # testing
-    # constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
-    # constants.pH_call_iter = -1
+    constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
+    constants.pH_call_iter = -1
     # actual
-    num_pulses = constants.NUM_PULSES[volume]
-    _pulse_pump(num_pulses)
+    # num_pulses = constants.NUM_PULSES[volume]
+    # _pulse_pump(num_pulses)
 
 
 def _pulse_pump(num_pulses):
